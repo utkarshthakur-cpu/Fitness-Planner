@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Mass Index - Fitness Planner</title>
+    <style>
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(135deg, #f3d286, #f78a98);
+    color: #333;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(45deg, #ff8a00, #ff7083);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.header nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1em;
+    transition: color 0.3s;
+}
+
+.header nav a:hover,
+.header nav a.active {
+    color: #ffdfba;
+    text-decoration: underline;
+}
+
+.header .btn {
+    background-color: #ff5f5f;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.header .btn:hover {
+    background-color: #ff4242;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.hero h2 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* Content Section */
+.content {
+    padding: 30px;
+    max-width: 800px;
+    margin: auto;
+    background-color: #ffffff;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.content h3 {
+    color: #ff8a00;
+    font-size: 1.5em;
+    margin-top: 20px;
+    position: relative;
+}
+
+.content h3::before {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: #ff8a00;
+    border-radius: 2px;
+}
+
+.content p {
+    color: #666;
+    line-height: 1.6;
+    font-size: 1em;
+}
+
+.content ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    color: #666;
+}
+
+/* Hover Effect on Headings */
+.content h3:hover {
+    color: #e76f00;
+    transition: color 0.3s ease;
+}
+
+/* Footer */
+.footer {
+    background-color: #ff7083;
+    text-align: center;
+    padding: 20px;
+    color: #fff;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* Responsive Design */
+body {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 0.9rem;
+    }
+    .header h1 {
+        font-size: 1.5em;
+    }
+    .hero h2 {
+        font-size: 2em;
+    }
+    .content h3 {
+        font-size: 1.3em;
+    }
+}
+    
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer #contact {
+    margin-top: 20px;
+}
+
+
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Fitness Planner</h1>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="bmi.html" class="active">Body Mass Index</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h2>Body Mass Index (BMI)</h2>
+        <p>Understand your body weight in relation to your height and take the first step towards a healthier you!</p>
+    </section>
+
+    <section class="content">
+        <h3 style="color: rgb(255, 171, 27);">What is BMI?</h3>
+        <p>Body Mass Index (BMI) is a measure of body fat based on your weight in relation to your height. It is a simple, easy-to-calculate method that can provide insight into whether a person has a healthy body weight for a given height.</p>
+
+        <h3 style="color: rgb(255, 171, 27);">Why is BMI Important?</h3>
+        <p>BMI is a useful screening tool to assess if an individual is underweight, normal weight, overweight, or obese. Knowing your BMI can help you understand potential health risks associated with body weight and encourage you to adopt healthier lifestyle choices.</p>
+
+        <h3 style="color: rgb(255, 171, 27);">How is BMI Calculated?</h3>
+        <p>BMI is calculated by dividing a person’s weight in kilograms by the square of their height in meters (kg/m²). Though it doesn’t directly measure body fat, BMI provides a reliable indicator of body fatness for most people.</p>
+
+        <h3 style="color: rgb(255, 171, 27);">BMI Categories:</h3>
+        <ul>
+            <li><strong>Underweight</strong>: BMI below 18.5</li>
+            <li><strong>Normal weight</strong>: BMI 18.5–24.9</li>
+            <li><strong>Overweight</strong>: BMI 25–29.9</li>
+            <li><strong>Obese</strong>: BMI 30 and above</li>
+        </ul>
+
+        <h3 style="color: rgb(255, 171, 27);">Limitations of BMI:</h3>
+        <p>While BMI is useful for population-level studies and general health assessments, it doesn’t account for muscle mass, bone density, or fat distribution. Other factors, such as age, gender, and muscle mass, should be considered to get a fuller picture of individual health.</p>
+
+        <h3 style="color: rgb(255, 171, 27);">Maintaining a Healthy BMI:</h3>
+        <p>To keep your BMI within a healthy range, consider adopting regular exercise routines and balanced nutrition plans. Check out our workout and nutrition plan sections for personalized advice!</p>
+    </section>
+
+    <footer id="contact">
+        <p>© 2024 Fitness Planner. All rights reserved.</p>
+        <p>Mail: info@sbpsranchi.com</p>
+    </footer>
+    
+</body>
+</html>

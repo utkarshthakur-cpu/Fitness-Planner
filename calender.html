@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorful Fitness Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<style>
+    /* styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #dac37a, #e49312, #9c5901);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    color: #333;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #555;
+    animation: fadeIn 1s ease;
+}
+
+.calendar-container {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.month-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.month-nav .nav-btn {
+    background-color: #7a6bbf;
+    color: #ffffff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.month-nav .nav-btn:hover {
+    transform: scale(1.2);
+}
+
+.days-header,
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.days-header div,
+.calendar-days div {
+    padding: 10px;
+    color: #444;
+    font-weight: bold;
+}
+
+.calendar-days div {
+    background-color: #ffecb3;
+    border-radius: 6px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.calendar-days div:hover {
+    background-color: #ffd54f;
+    transform: translateY(-5px);
+}
+
+.to-do-list {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+#tasks {
+    list-style: none;
+    padding: 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+#tasks li {
+    background-color: #d1c4e9;
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+#tasks li:hover {
+    background-color: #b39ddb;
+}
+
+#taskInput {
+    width: 70%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+#addTaskBtn {
+    padding: 10px;
+    background-color: #7a6bbf;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgb(246, 74, 74);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-left: 40px;
+        }
+
+        .home-btn {
+            margin-right: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #da1c1c;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background: #ffb03b;
+        }
+
+
+        .recbtn{
+            margin-right: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #da1c1c;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .recbtn:hover {
+            background: #ffb03b;
+        }
+
+
+
+             
+
+
+
+
+</style>
+
+<body>
+    <header>
+        <h1 style="color: white;">Fitness Planner</h1>
+        <a href="./all-tasks.html" class="recbtn">YOUR RECORDS</a>
+        <a href="home.html" class="home-btn">Home</a>
+    </header>
+
+    <div class="container">
+        
+        <div class="calendar-container">
+            <div class="month-nav">
+                <button id="prevMonth" class="nav-btn">&#10094;</button>
+                <h2 id="monthYear"></h2>
+                <button id="nextMonth" class="nav-btn">&#10095;</button>
+            </div>
+            <div class="days-header">
+                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+            <div id="calendarDays" class="calendar-days"></div>
+        </div>
+        <div id="toDoList" class="to-do-list">
+            <h3>To-Do List for <span id="selectedDateDisplay"></span></h3>
+            <ul id="tasks"></ul>
+            <input type="text" id="taskInput" placeholder="Add a new task">
+            <button id="addTaskBtn">Add Task</button>
+        </div>
+    </div>
+
+    
+
+
+
+    <script>
+        // script.js
+const calendarDays = document.getElementById('calendarDays');
+const monthYear = document.getElementById('monthYear');
+const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+const tasks = document.getElementById('tasks');
+const taskInput = document.getElementById('taskInput');
+const addTaskBtn = document.getElementById('addTaskBtn');
+
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+let selectedDate = null;
+const tasksForDate = JSON.parse(localStorage.getItem('tasksForDate')) || {};
+
+function loadCalendar() {
+    calendarDays.innerHTML = '';
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    monthYear.textContent = new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long', year: 'numeric' });
+
+    for (let i = 0; i < firstDay; i++) {
+        calendarDays.innerHTML += '<div></div>';
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.textContent = day;
+        dayCell.onclick = () => selectDate(day);
+        calendarDays.appendChild(dayCell);
+    }
+}
+
+function selectDate(day) {
+    selectedDate = `${currentYear}-${currentMonth + 1}-${day}`;
+    selectedDateDisplay.textContent = new Date(currentYear, currentMonth, day).toLocaleDateString();
+    loadTasks();
+}
+
+function loadTasks() {
+    tasks.innerHTML = '';
+    if (tasksForDate[selectedDate]) {
+        tasksForDate[selectedDate].forEach(task => {
+            const taskItem = document.createElement('li');
+            taskItem.textContent = task;
+            tasks.appendChild(taskItem);
+        });
+    }
+}
+
+addTaskBtn.onclick = () => {
+    if (selectedDate && taskInput.value) {
+        if (!tasksForDate[selectedDate]) {
+            tasksForDate[selectedDate] = [];
+        }
+        tasksForDate[selectedDate].push(taskInput.value);
+        taskInput.value = '';
+        loadTasks();
+        saveTasks();
+    }
+};
+
+function saveTasks() {
+    localStorage.setItem('tasksForDate', JSON.stringify(tasksForDate));
+}
+
+document.getElementById('prevMonth').onclick = () => {
+    currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+    currentYear = (currentMonth === 11) ? currentYear - 1 : currentYear;
+    loadCalendar();
+};
+
+document.getElementById('nextMonth').onclick = () => {
+    currentMonth = (currentMonth === 11) ? 0 : currentMonth + 1;
+    currentYear = (currentMonth === 0) ? currentYear + 1 : currentYear;
+    loadCalendar();
+};
+
+loadCalendar();
+
+    </script>
+
+
+
+</body>
+</html>

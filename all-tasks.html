@@ -1,0 +1,154 @@
+<!-- all-tasks.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All To-Do Records</title>
+    <link rel="stylesheet" href="all-tasks.css">
+</head>
+
+<style>
+    /* all-tasks.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f0e4ff, #d4e6ff, #ffe9e9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    color: #333;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+h1 {
+    font-size: 2em;
+    color: #6c63ff;
+    margin-bottom: 15px;
+    animation: fadeIn 1s ease;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.task-item {
+    background: #f9f7ff;
+    border-left: 5px solid #6c63ff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.task-item:hover {
+    transform: scale(1.03);
+}
+
+.task-date {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #6c63ff;
+    margin-bottom: 5px;
+}
+
+.task-text {
+    font-size: 0.9em;
+    color: #555;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #6c63ff;
+    border-radius: 5px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+ 
+</style>
+
+<body>
+    <div class="container">
+        <h1>All To-Do Records</h1>
+        <div id="allTasksList" class="task-list"></div>
+    </div>
+
+    <script>
+        // all-tasks.js
+const allTasksList = document.getElementById('allTasksList');
+
+// Fetch and display all tasks
+fetch('/all-tasks')
+    .then(response => response.json())
+    .then(data => {
+        const today = new Date().toISOString().split('T')[0];
+        for (const date in data) {
+            const taskContainer = document.createElement('div');
+            taskContainer.className = 'task-item';
+
+            const dateElement = document.createElement('div');
+            dateElement.className = 'task-date';
+            dateElement.textContent = new Date(date).toLocaleDateString();
+            taskContainer.appendChild(dateElement);
+
+            data[date].forEach(task => {
+                const taskText = document.createElement('div');
+                taskText.className = 'task-text';
+                taskText.textContent = `• ${task}`;
+                taskContainer.appendChild(taskText);
+            });
+
+            allTasksList.appendChild(taskContainer);
+
+            // Notify if tasks are due today
+            if (date === today) {
+                notifyTasks(data[date]);
+            }
+        }
+    })
+    .catch(error => console.error('Error fetching all tasks:', error));
+
+// Function to send a notification for today's tasks
+function notifyTasks(tasks) {
+    if (Notification.permission === "granted") {
+        new Notification("Today's Tasks", {
+            body: tasks.join(', '),
+            icon: 'icon.png' // Optional: add a custom icon here
+        });
+    } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                new Notification("Today's Tasks", {
+                    body: tasks.join(', '),
+                    icon: 'icon.png'
+                });
+            }
+        });
+    }
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #eb7608, #f0c85a);
+    color: #333;
+}
+
+.contact-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.contact-info {
+    margin-bottom: 30px;
+}
+
+.info-item {
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #8e10ab; /* Green color for headings */
+    margin-bottom: 5px;
+    font-size: 25px;
+}
+
+a {
+    color: #3d086f; /* Link color */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input, textarea {
+    padding: 10px;
+    margin: 5px 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4caf50; /* Button color */
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.response-message {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer #contact {
+    margin-top: 20px;
+}
+
+.home-btn {
+    margin-left: 70rem;
+ 
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #da1c1c;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    top: 17px;
+    left: -1000px;
+    transition: background 0.3s ease;
+    position: relative;
+}
+
+.home-btn:hover {
+    background: #ffb03b;
+}
+
+.contact-container{
+    background: radial-gradient( white ,rgb(188, 188, 188));
+}
+
+</style>
+
+<body>
+
+    <a href="home.html" class="home-btn">Home</a>
+
+    <div class="contact-container">
+        <h1>Contact Us</h1>
+        <div class="contact-info">
+            <div class="info-item">
+                <h3>Mobile Number</h3>
+                <p id="mobile-number">+91 9507035717 <br> +91 9507035987</p>
+            </div>
+            <div class="info-item">
+                <h3>Website</h3>
+                <p id="website-url"><a href="https://www.sbpsranchi.com" target="_blank">www.sbpsranchi.com</a></p>
+            </div>
+            <div class="info-item">
+                <h3>Facebook Page</h3>
+                <p id="facebook-page"><a href="https://www.facebook.com/saralabirla/" target="_blank">SARALA BIRLA PUBLIC SCHOOL<a></p>
+            </div>
+        </div>
+        <form id="contact-form">
+            <h2>Get in Touch</h2>
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <textarea id="message" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+        <div id="response-message" class="response-message"></div>
+    </div>
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+
+    // Here you can add code to send the form data to a server
+    // For now, we'll just simulate a successful submission
+
+    // Display a success message
+    document.getElementById('response-message').innerText = `Thank you, ${name}! Your message has been sent.`;
+    document.getElementById('contact-form').reset(); // Reset form
+});
+
+    </script>
+
+<footer id="contact">
+    <p>© 2024 Fitness Planner. All rights reserved.</p>
+    <p>Mail: info@sbpsranchi.com</p>
+</footer>
+
+
+</body>
+</html>

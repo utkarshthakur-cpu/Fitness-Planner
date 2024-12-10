@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness and Nutrition Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Playpen+Sans&family=Poppins:wght@100;300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style_index.css">
+
+    <style> /*chat css*/
+        .chatbot-toggler {
+        position: fixed;
+        bottom: 30px;
+        right: 35px;
+        outline: none;
+        border: none;
+        height: 50px;
+        width: 50px;
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #d02424;
+        transition: all 0.2s ease;
+    }
+
+    body.show-chatbot .chatbot-toggler {
+        transform: rotate(360deg);
+    }
+
+    .chatbot-toggler span {
+        color: #fff;
+        position: absolute;
+    }
+
+    .chatbot {
+        position: fixed;
+        right: 50px;
+        bottom: 100px;
+        width: 420px;
+        background: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.5);
+        transform-origin: bottom right;
+        box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+            0 32px 64px -48px rgba(0, 0, 0, 0.5);
+        transition: all 0.1s ease;
+    }
+
+    body.show-chatbot .chatbot {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1);
+    }
+
+    .chatbot header {
+        padding: 16px 0;
+        position: relative;
+        text-align: center;
+        color: #fff;
+        background: #f04646;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .chatbot header span {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        display: none;
+        cursor: pointer;
+        transform: translateY(-50%);
+    }
+
+    header h2 {
+        font-size: 1.4rem;
+    }
+
+    .chatbot .chatbox {
+        overflow-y: auto;
+        height: 250px;
+        padding: 30px 20px 100px;
+    }
+
+    .chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-track {
+        background: #fff;
+        border-radius: 25px;
+    }
+
+    .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 25px;
+    }
+
+    .chatbox .chat {
+        display: flex;
+        list-style: none;
+    }
+
+    .chatbox .outgoing {
+        margin: 20px 0;
+        justify-content: flex-end;
+    }
+
+    .chatbox .incoming span {
+        width: 32px;
+        height: 32px;
+        color: #fff;
+        cursor: default;
+        text-align: center;
+        line-height: 32px;
+        align-self: flex-end;
+        background: #d13b54;
+        border-radius: 4px;
+        margin: 0 10px 7px 0;
+    }
+
+    .chatbox .chat p {
+        white-space: pre-wrap;
+        padding: 12px 16px;
+        border-radius: 10px 10px 0 10px;
+        max-width: 75%;
+        color: #fff;
+        font-size: 0.95rem;
+        background: #df3f3f;
+    }
+
+    .chatbox .incoming p {
+        border-radius: 10px 10px 10px 0;
+    }
+
+    .chatbox .chat p.error {
+        color: #721c24;
+        background: #f8d7da;
+    }
+
+    .chatbox .incoming p {
+        color: #000;
+        background: #f2f2f2;
+    }
+
+    .chatbot .chat-input {
+        display: flex;
+        gap: 5px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: #fff;
+        padding: 3px 20px;
+        border-top: 1px solid #ddd;
+    }
+
+    .chat-input textarea {
+        height: 55px;
+        width: 100%;
+        border: none;
+        outline: none;
+        resize: none;
+        max-height: 180px;
+        padding: 15px 15px 15px 0;
+        font-size: 0.95rem;
+    }
+
+    .chat-input span {
+        align-self: flex-end;
+        color: #b12b2b;
+        cursor: pointer;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        visibility: hidden;
+        font-size: 1.35rem;
+    }
+
+    .chat-input textarea:valid~span {
+        visibility: visible;
+    }
+
+    @media (max-width: 490px) {
+        .chatbot-toggler {
+            right: 20px;
+            bottom: 20px;
+        }
+
+        .chatbot {
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            border-radius: 0;
+            width: 100%;
+        }
+
+        .chatbot .chatbox {
+            height: 90%;
+            padding: 25px 15px 100px;
+        }
+
+        .chatbot .chat-input {
+            padding: 5px 15px;
+        }
+
+        .chatbot header span {
+            display: block;
+        }
+
+        
+            
+
+    }
+</style>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            color: #333;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px; 
+            margin: auto;
+        
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ffb03b, #ff7083);
+            color: #fff;
+            padding: 0px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            position: relative;
+            right: 5rem;
+            font-size: 35px;
+            font-family: 'Roboto';
+        }
+
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            position: relative;
+            right: 70px;
+            top: 2px;
+            font-size: 20px;
+            gap: 20px;
+        }
+
+        header nav ul li {
+            margin-left: 20px;
+        }
+
+        header nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+        }
+
+        header ul li a::after {
+            content: "";
+            position: absolute;
+            background: linear-gradient(135deg, #36d1dc, #5b86e5);
+            height: 3px;
+            width: 0px;
+            left: 0px;
+            bottom: -10px;
+            transition: 0.3s;
+        }
+
+        header ul li a:hover::after {
+            width: 100%;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #f0f0f0, #d1e1ff);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-family: 'Playpen Sans', cursive;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .hero-section h1 span {
+            color: #ff7083;
+        }
+
+        .hero-section p {
+            font-size: 18px;
+            margin-bottom: 42px;
+        }
+
+        .hero-section .btn {
+            padding: 15px 30px;
+            background: #ff7083;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .hero-section .btn:hover {
+            background: #ffb03b;
+        }
+
+            body{
+                background-image: url(./bgimage2.webp);
+                
+            }
+
+        /* Planner Sections */
+        .planner {
+            background-color: white;
+            padding: 30px 15px;
+            margin: 30px auto;
+            width: 60%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            
+        }
+
+        .section-title h2 {
+            font-size: 24px;
+            color: #ff7083;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .plan {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        #calculateBmi {
+    position: relative;
+    padding: 10px 20px;
+    color: #3498db;
+    border: 2px solid #3498db;
+    overflow: hidden;
+    background-color: transparent;
+    font-weight: bold; /* Ensures the text is more prominent */
+    transition: color 0.4s;
+}
+
+#calculateBmi::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: #ff7083;
+    transition: left 0.4s;
+    z-index: 0;
+    cursor: pointer; /* Make sure this is behind the text */
+}
+
+#calculateBmi:hover::before {
+    left: 0;
+}
+
+ span {
+    position: relative;
+    z-index: 1; /* Make sure the text is above the sliding color */
+    color: inherit;
+}
+
+
+
+
+
+        .plan label {
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .plan input,
+        .plan select {
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 40rem;
+        }
+
+        #savePlans {
+            background: #555;
+            color: white;
+            border-radius: 10px;
+            width: 175px;
+            height: 40px;
+            font-size: 14px;
+            font-family: 'Roboto';
+            border: none;
+            position: relative;
+            top: 15px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+
+        
+
+       
+  footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer #contact {
+    margin-top: 20px;
+}
+
+        #element{
+            color: #e6324a;
+            font-weight: 1000;
+        }
+
+        .logoimg{
+            height: 100px;
+            width: 100px;
+            position: absolute;
+            top:14px ;
+            left: 33px;
+        }
+            .logo h1{
+                padding-left: 50px;
+            }
+            
+            ::-webkit-scrollbar{
+                width: 10px;
+            }
+
+
+
+            ::-webkit-scrollbar-track{
+                background: #d1e5ff;
+            }
+
+            ::-webkit-scrollbar-thumb{
+                background: linear-gradient( #ffb03b, #ff7083);
+                border-radius: 5px;
+                height: 100px;
+            }
+
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img class="logoimg" src="./a-flat-vector-illustrative-style-abstract-concept--fuYzA6ElTFOimpKntAcJUw-bvUGZTL5QNyd_wdNdxCcSA-removebg-preview.png" alt="">
+                <h1>Fitness Planner</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="./aboutus.html">About</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                    <li><a href="./calender.html">Calendar</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <h1>Your Journey to <span>Fitness</span> Starts Here!</h1>
+        <div class="ANIMATION">
+        <p>Get your <span id="element"></span></p>
+        <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+        <script>
+            var typed = new Typed('#element', {
+                strings: ['WORKOUT PLAN', 'NUTRITION PLAN', 'BODY MASS INDEX', 'DIET','EXERCISE','HEALTHY LIFE'],
+                typeSpeed: 70,
+            });
+          </script>
+        </div>
+    </section>
+    
+
+
+    <section class="planner" style="backdrop-filter: blur(4px); background-color: rgba(255, 255, 255, 0.5);">
+        <div class="section-title">
+            <h2>BMI Calculator</h2>
+            <h5>Know more about <a href="./bmi.html">BMI</a></h5>
+        </div>
+        <div id="BMI" class="plan">
+            <label for="height">Height (cm):</label>
+            <input type="number" id="height" placeholder="Enter your height in cm">
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" placeholder="Enter your weight in kg">
+            <button id="calculateBmi"><span>Calculate BMI</span></button>
+            <p id="bmiResult"></p>
+        </div>
+
+        <div class="section-title">
+            <h2>Workout Plan</h2>
+        </div>
+        <div class="plan">
+            <label for="workout">Select your workout plan:</label>
+            <select id="workout">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+            </select>
+        </div>
+
+        <div class="section-title">
+            <h2>Nutrition Plan</h2>
+        </div>
+        <div class="plan">
+            <label for="nutrition">Select your nutrition plan:</label>
+            <select id="nutrition">
+                <option value="vegan">Vegan</option>
+                <option value="keto">Keto</option>
+                <option value="paleo">Paleo</option>
+            </select>
+        </div>
+        <button id="savePlans"><span>Save Nutrition and Workout Plans</span></button>
+    </section>
+
+   
+  <footer id="contact">
+    <p>© 2024 Fitness Planner. All rights reserved.</p>
+    <p>Mail: info@sbpsranchi.com</p>
+</footer>
+
+
+    <script>
+        document.getElementById('calculateBmi').addEventListener('click', function () {
+            const height = parseFloat(document.getElementById('height').value) / 100;
+            const weight = parseFloat(document.getElementById('weight').value);
+            const bmi = (weight / (height * height)).toFixed(2);
+            const bmiResult = document.getElementById('bmiResult');
+
+            if (!isNaN(bmi)) {
+                let status = '';
+                if (bmi < 18.5) {
+                    status = 'Underweight';
+                } else if (bmi < 24.9) {
+                    status = 'Normal weight';
+                } else {
+                    status = 'Overweight';
+                }
+                bmiResult.textContent = `Your BMI is ${bmi}. You are classified as: ${status}.`;
+            } else {
+                bmiResult.textContent = 'Please enter valid height and weight values.';
+            }
+        });
+
+        document.getElementById('savePlans').addEventListener('click', function () {
+            const workoutPlan = document.getElementById('workout').value;
+            const nutritionPlan = document.getElementById('nutrition').value;
+            const recommendations = generateRecommendations(workoutPlan, nutritionPlan);
+
+            const content = `Nutrition Plan: ${nutritionPlan}\nWorkout Plan: ${workoutPlan}\nRecommendations:\n${recommendations}`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'nutrition_workout_plans.txt';
+            link.click();
+        });
+
+        function generateRecommendations(workout, nutrition) {
+            let workoutRecommendation;
+            let nutritionRecommendation;
+
+            // Workout recommendations
+            if (workout === 'beginner') {
+                workoutRecommendation = '10 reps of Push-ups daily, 3 times a week';
+            } else if (workout === 'intermediate') {
+                workoutRecommendation = '15 reps of Squats and 20 mins of Cardio 5 times a week';
+            } else if (workout === 'advanced') {
+                workoutRecommendation = '5 sets of Deadlifts, 5 times a week';
+            }
+
+            if (nutrition === 'vegan') {
+                nutritionRecommendation = 'Include a variety of legumes, nuts, and seeds in your diet.';
+            } else if (nutrition === 'keto') {
+                nutritionRecommendation = 'Focus on high-fat and low-carb meals such as avocado and fish.';
+            } else if (nutrition === 'paleo') {
+                nutritionRecommendation = 'Eat lean meats, fish, fruits, vegetables, nuts, and seeds.';
+            }
+
+            return `${workoutRecommendation}\n${nutritionRecommendation}`;
+        }
+    </script>
+
+<button class="chatbot-toggler">
+</button>
+
+
+<div class="chatbot">
+    <header>
+        <h2>AI TRAINER</h2>
+        <span class="close-btn material-symbols-outlined">X</span>
+    </header>
+    <ul class="chatbox">
+        <li class="chat incoming">
+            <span class="material-symbols-outlined">AI</span>
+            <p>Hi there <br>How can I help you today?</p>
+        </li>
+    </ul>
+    <div class="chat-input">
+        <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+        <span id="send-btn" class="material-symbols-rounded"></span>
+    </div>
+</div>
+
+<script>
+    const chatbotToggler = document.querySelector(".chatbot-toggler");
+    const closeBtn = document.querySelector(".close-btn");
+    const chatbox = document.querySelector(".chatbox");
+    const chatInput = document.querySelector(".chat-input textarea");
+    const sendChatBtn = document.querySelector(".chat-input span");
+
+    let userMessage = null; // Variable to store user's message
+    const inputInitHeight = chatInput.scrollHeight;
+
+    // API configuration
+    const API_KEY = "AIzaSyC2JtgdmqPENURTBX-Hh1cjZqDGlVXFD3Y"; 
+    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
+
+    const createChatLi = (message, className) => {
+        // Create a chat <li> element with passed message and className
+        const chatLi = document.createElement("li");
+        chatLi.classList.add("chat", `${className}`);
+        let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">AI</span><p></p>`;
+        chatLi.innerHTML = chatContent;
+        chatLi.querySelector("p").textContent = message;
+        return chatLi; // return chat <li> element
+    }
+
+    const generateResponse = async (chatElement) => {
+        const messageElement = chatElement.querySelector("p");
+    
+        // Define the properties and message for the API request
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{
+                    role: "user",
+                    parts: [{ text: userMessage }]
+                }]
+            }),
+        }
+    
+        // Send POST request to API, get response and set the response as paragraph text
+        try {
+            const response = await fetch(API_URL, requestOptions);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error.message);
+        
+            // Get the API response text and update the message element
+            messageElement.textContent = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1');
+        } catch (error) {
+            // Handle error
+            messageElement.classList.add("error");
+            messageElement.textContent = error.message;
+        } finally {
+            chatbox.scrollTo(0, chatbox.scrollHeight);
+        }
+    }
+
+    const handleChat = () => {
+        userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
+        if (!userMessage) return;
+    
+        // Clear the input textarea and set its height to default
+        chatInput.value = "";
+        chatInput.style.height = `${inputInitHeight}px`;
+    
+        // Append the user's message to the chatbox
+        chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+        chatbox.scrollTo(0, chatbox.scrollHeight);
+    
+        setTimeout(() => {
+            // Display "Thinking..." message while waiting for the response
+            const incomingChatLi = createChatLi("Thinking...", "incoming");
+            chatbox.appendChild(incomingChatLi);
+            chatbox.scrollTo(0, chatbox.scrollHeight);
+            generateResponse(incomingChatLi);
+        }, 600);
+    }
+
+    chatInput.addEventListener("input", () => {
+        // Adjust the height of the input textarea based on its content
+        chatInput.style.height = `${inputInitHeight}px`;
+        chatInput.style.height = `${chatInput.scrollHeight}px`;
+    });
+
+    chatInput.addEventListener("keydown", (e) => {
+        // If Enter key is pressed without Shift key and the window
+        // width is greater than 800px, handle the chat
+        if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+            e.preventDefault();
+            handleChat();
+        }
+    });
+
+    sendChatBtn.addEventListener("click", handleChat);
+    closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+    chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
+</script>
+</body>
+
+</html>
